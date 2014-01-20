@@ -203,6 +203,7 @@ SphereCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
+<<<<<<< HEAD
   m_Radius: .5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!33 &17853619
@@ -616,6 +617,30 @@ MeshFilter:
   m_GameObject: {fileID: 323960382}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!4 &323960386
+=======
+  m_ClearFlags: 1
+  m_BackGroundColor: {r: .192156866, g: .301960796, b: .474509805, a: .0196078438}
+  m_NormalizedViewPortRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+  near clip plane: .300000012
+  far clip plane: 1000
+  field of view: 60
+  orthographic: 0
+  orthographic size: 100
+  m_Depth: -1
+  m_CullingMask:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_RenderingPath: -1
+  m_TargetTexture: {fileID: 0}
+  m_HDR: 0
+  m_OcclusionCulling: 1
+--- !u!4 &1664809512
+>>>>>>> a4e6612a1f378c91b6706a684a899c064b2730df
 Transform:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
