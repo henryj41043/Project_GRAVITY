@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class PlanetCollideScript : MonoBehaviour
+public class ShipDestroyScript : MonoBehaviour
 {
     void OnCollisionEnter(Collision col)
     {
@@ -11,15 +11,10 @@ public class PlanetCollideScript : MonoBehaviour
             Destroy(col.gameObject);
             Application.LoadLevel(0);
         }
-    }
-
-    void OnTriggerEnter(Collider col)
-    {
-        Debug.Log("Trigger Detected!");
-        if (col.gameObject.name == "Player")
+        if (col.gameObject.name == "Enemy")
         {
+            GameObject explosion = Instantiate(Resources.Load("Explosion"), transform.position, Quaternion.identity) as GameObject;
             Destroy(col.gameObject);
-            Application.LoadLevel(0);
         }
     }
 }

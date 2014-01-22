@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-class ThirdPersonController : MonoBehaviour
+class ShipController : MonoBehaviour
 {
     // Component Variables
     // These are variables used to access different components of the Game Object.
