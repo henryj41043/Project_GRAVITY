@@ -16,5 +16,11 @@ public class ShipDestroyScript : MonoBehaviour
             GameObject explosion = Instantiate(Resources.Load("Explosion"), transform.position, Quaternion.identity) as GameObject;
             Destroy(col.gameObject);
         }
+        if (col.gameObject.name == "Asteroid")
+        {
+            GameObject explosion = Instantiate(Resources.Load("Explosion"), transform.position, Quaternion.identity) as GameObject;
+            Destroy(col.gameObject);
+            AsteroidSpawnerScript.asteroidCurCount = AsteroidSpawnerScript.asteroidCurCount - 1;
+        }
     }
 }

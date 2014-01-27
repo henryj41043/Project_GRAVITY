@@ -33,17 +33,8 @@ class ShipController : MonoBehaviour
     float maxTorqueVelocity;
     float torqueDrag;
 
-    // Orientation Variables
-    // These are used to control body orientation towards a desired rotation similar to the camera.
-    float targetHorRotation;
-    float targetVerRotation;
-
     Quaternion bodyRot;
     Quaternion camRot;
-
-    // Gravity Well Object
-    GameObject gravityWell;
-    Vector3 gravityForce;
 
 	// Use this for initialization
 	void Start ()
@@ -76,14 +67,6 @@ class ShipController : MonoBehaviour
 
         body.drag = 2 * propulsionDrag / (propulsionDrag * Time.fixedDeltaTime + 1);
         body.angularDrag = 6 * torqueDrag / (torqueDrag * Time.fixedDeltaTime + 1);
-
-        // Orientation Variables
-        targetHorRotation = 0.0f;
-        targetVerRotation = 0.0f;
-
-        // Gravity Well Object
-        gravityWell = GameObject.Find("Gravity Orb");
-        gravityForce = Vector3.zero;
 	}
 	
 	// Update is called once per frame
@@ -117,12 +100,5 @@ class ShipController : MonoBehaviour
 
         force.relativeForce = new Vector3(0, 0, ((maxPropulsionForce - minPropulsionForce) * Propulsion) + minPropulsionForce);
         force.relativeTorque = new Vector3(0, 0, -(maxTorqueForce * Torque));
-
-        if (gravityWell != null)
-        {
-            gravityForce = gravityWell.transform.position - body.transform.position;
-            gravityForce = (gravityForce / gravityForce.magnitude) * (9.8f + ((Mathf.Floor(50.0f / gravityForce.magnitude) / (50.0f / gravityForce.magnitude)) * maxPropulsionForce) + (maxPropulsionForce - 9.8f) * Mathf.Pow((1.0f - ((gravityForce.magnitude - 50.0f) / GravityWellData.mapRadius)), 11.0f));
-            force.force = gravityForce;
-        }
     }
 }
