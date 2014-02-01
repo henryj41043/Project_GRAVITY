@@ -27,7 +27,6 @@ public class GravityWellPhysics : MonoBehaviour
         if (gravityWell != null)
         {
             gravityForce = (gravityWell.transform.position - body.transform.position);
-            Debug.Log("Distance: " + gravityForce.magnitude + " m");
             gravityForce = gravityForce.normalized * ((GravityWellData.gravityConstant * GravityWellData.gravityWellMass * (float)GravityWellData.gravityPolarity) / Mathf.Pow(gravityForce.magnitude, 2.0f));
             body.constantForce.force = gravityForce;
         }

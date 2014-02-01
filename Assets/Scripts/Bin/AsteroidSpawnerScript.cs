@@ -3,12 +3,6 @@ using System.Collections;
 
 public class AsteroidSpawnerScript : MonoBehaviour
 {
-    // Component Variables
-    Rigidbody body;
-
-    // Gravity Well Object
-    GameObject gravityWell;
-
     // Internal Counter
     public static int asteroidCurCount;
     public static int asteroidMaxCount;
@@ -16,12 +10,8 @@ public class AsteroidSpawnerScript : MonoBehaviour
     // Use this for initialization
     void Start()
     {
-        body = GetComponent<Rigidbody>();
-
-        gravityWell = GameObject.Find("Gravity Orb");
-
         asteroidCurCount = 0;
-        asteroidMaxCount = 10;
+        asteroidMaxCount = 50;
     }
 	
 	// Update is called once per frame

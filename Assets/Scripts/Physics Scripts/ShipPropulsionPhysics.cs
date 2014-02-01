@@ -28,14 +28,14 @@ public class ShipPropulsionPhysics : MonoBehaviour
         force = GetComponent<ConstantForce>();
 
         // Movement Variables
-        maxPropulsionForce = 150.0f;
+        maxPropulsionForce = 100.0f;
         maxPropulsionAccel = maxPropulsionForce;
-        maxPropulsionVelocity = 450.0f;
+        maxPropulsionVelocity = 300.0f;
         propulsionDrag = maxPropulsionAccel / maxPropulsionVelocity;
 
-        maxTorqueForce = 0.25f;
+        maxTorqueForce = 25f;
         maxTorqueAccel = maxTorqueForce;
-        maxTorqueVelocity = 0.5f;
+        maxTorqueVelocity = 50f;
         torqueDrag = maxTorqueAccel / maxTorqueVelocity;
 
         body.drag = propulsionDrag / (propulsionDrag * Time.fixedDeltaTime + 1);
