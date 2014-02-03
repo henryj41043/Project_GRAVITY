@@ -5,11 +5,12 @@ class ThirdPersonController : MonoBehaviour
 {
     // Script References
     ShipGraphics shipGraphics;
-    ShipPropulsionPhysics shipPropulsionPhysics;
+    ShipPhysicsScript shipPhysicsScript;
 
     // Component Variables
     Camera cam;
     Rigidbody body;
+    GameObject model;
     Collider capsuleCollider;
     Collider boxCollider;
     AudioSource lockSound;
@@ -37,15 +38,14 @@ class ThirdPersonController : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-        Screen.lockCursor = true;
-
         // Script References
         shipGraphics = GetComponent<ShipGraphics>();
-        shipPropulsionPhysics = GetComponent<ShipPropulsionPhysics>();
+        shipPhysicsScript = GetComponent<ShipPhysicsScript>();
 
         // Component Variables
         cam = GetComponentInChildren<Camera>();
         body = GetComponent<Rigidbody>();
+        model = transform.Find("Model").gameObject;
         capsuleCollider = GetComponentInChildren<CapsuleCollider>();
         boxCollider = GetComponentInChildren<BoxCollider>();
         lockSound = GetComponent<AudioSource>();
@@ -72,6 +72,8 @@ class ThirdPersonController : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
+        Screen.lockCursor = true;
+
         // Get Input
         float horRotation = Input.GetAxis("X") * mouseSensitivity;
         float verRotation = Input.GetAxis("Y") * mouseSensitivity;
@@ -97,7 +99,8 @@ class ThirdPersonController : MonoBehaviour
         shipGraphics.Draw(bodyPreRot, body.transform.rotation, verTranslation);
 
         // Track for Potential Targets
-        trackingResults = TargetLockScript.GetTargets(body);
+        trackingResults = TargetLockScript.GetTargets(body, model);
+
         if (trackingResults != null)
         {
             if (trackedObject == null)
@@ -122,7 +125,7 @@ class ThirdPersonController : MonoBehaviour
         else if (Input.GetButton("Fire") || (Input.GetAxis("Fire") < 0.0f))
         {
             ShootingScript.FireBullet(body, capsuleCollider, boxCollider, trackedObject);
-            shootWaitTime = 0.1f;
+            shootWaitTime = 0.05f;
         }
 	}
 
@@ -134,7 +137,8 @@ class ThirdPersonController : MonoBehaviour
             GUIStyle centeredStyle = GUI.skin.GetStyle("Label");
             centeredStyle.normal.textColor = Color.red;
             centeredStyle.alignment = TextAnchor.UpperCenter;
-            GUI.Label(new Rect(0, Screen.height / 2, Screen.width, Screen.height),"-- TARGET LOCKED --" , centeredStyle);
+            float angle = Vector3.Angle(body.transform.forward.normalized, (trackedObject.transform.position - body.transform.position).normalized);
+            GUI.Label(new Rect(0, Screen.height / 2, Screen.width, Screen.height),"-- TARGET LOCKED --\n" + angle + " DEG", centeredStyle);
         }
     }
 
@@ -142,6 +146,6 @@ class ThirdPersonController : MonoBehaviour
     void FixedUpdate()
     {
         //Apply Physics
-        shipPropulsionPhysics.ApplyForces(horTranslation, verTranslation);
+        shipPhysicsScript.ApplyForces(horTranslation, verTranslation);
     }
 }

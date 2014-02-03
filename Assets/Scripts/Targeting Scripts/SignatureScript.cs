@@ -16,8 +16,7 @@ public class SignatureScript : MonoBehaviour {
         // Rotate Decal to face the Player Camera.
         if (playerCam != null)
         {
-            transform.LookAt(transform.position + playerCam.transform.rotation * Vector3.up, playerCam.transform.rotation * Vector3.forward);
-            transform.localScale = Vector3.one / 500 * ((transform.position - playerCam.transform.position).magnitude) * Mathf.Tan(Mathf.Deg2Rad * 30.0f);
+            transform.localScale = Vector3.one / 500 * ((transform.position - playerCam.transform.position).magnitude) * Mathf.Tan(Mathf.Deg2Rad * 40.0f);
         }
     }
 }

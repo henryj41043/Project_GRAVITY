@@ -16,8 +16,8 @@ public class BulletController : MonoBehaviour {
 
         if (trackedObject != null)
         {
-            body.transform.rotation = Quaternion.LookRotation(trackedObject.transform.position - body.transform.position);
-            body.velocity = body.velocity.magnitude * body.transform.forward;
+            //body.transform.rotation = Quaternion.LookRotation(trackedObject.transform.position - body.transform.position);
+            //body.velocity = body.velocity.magnitude * body.transform.forward;
         }
     }
 	
@@ -27,8 +27,8 @@ public class BulletController : MonoBehaviour {
         if (trackedObject != null)
         {
             Quaternion rotation = Quaternion.LookRotation(trackedObject.transform.position - body.transform.position);
-            //body.transform.rotation = Quaternion.Lerp(body.transform.rotation, rotation, 0.2f * Time.deltaTime);
-            body.transform.rotation = Quaternion.LookRotation(trackedObject.transform.position - body.transform.position);
+            float angle = Vector3.Angle(body.transform.forward.normalized, (trackedObject.transform.position - body.transform.position).normalized);
+            body.transform.rotation = Quaternion.Lerp(body.transform.rotation, rotation, (30.0f / angle) * Time.deltaTime);
             body.velocity = body.velocity.magnitude * body.transform.forward;
         }
 	}
@@ -39,6 +39,8 @@ public class BulletController : MonoBehaviour {
         script.hits = script.hits + 1;
         if ((col.gameObject.name == "Asteroid(Clone)"))
         {
+            Destroy(col.gameObject);
+            AsteroidSpawnerScript.asteroidCurCount = AsteroidSpawnerScript.asteroidCurCount - 1;
             GameObject explosion = Instantiate(Resources.Load("Explosion"), transform.position, Quaternion.identity) as GameObject;
             Destroy(gameObject);
         }

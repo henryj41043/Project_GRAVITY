@@ -1,30 +1,53 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class TargetLockScript : MonoBehaviour {
-
-    private static RaycastHit targets;
-    private static GameObject trackedObject;
-	
+public class TargetLockScript : MonoBehaviour
+{
 	// Update is called once per frame
-	public static GameObject GetTargets (Rigidbody body)
+	public static GameObject GetTargets (Rigidbody body, GameObject localSignature)
     {
-        if (Physics.Raycast(body.transform.position, body.transform.forward, out targets, 2000.0f) == true)
+        float angle;
+        float bestAngle = -1; // Unassigned
+
+        localSignature.tag = "Untagged";
+
+        RaycastHit targets;
+        GameObject trackedObject = null;
+        GameObject[] signatures = GameObject.FindGameObjectsWithTag("Signature");
+
+        foreach (GameObject s in signatures)
         {
-            if (targets.collider.tag == "TargetableObject")
+            //Debug.DrawLine(body.transform.position, body.transform.position + body.transform.forward * 2000.0f, Color.red);
+            angle = Vector3.Angle(body.transform.forward.normalized, (s.transform.position - body.transform.position).normalized);
+
+            if (angle < 1.0f)
             {
-                trackedObject = targets.transform.gameObject;
-
-                Transform model = trackedObject.transform.Find("Model");
-
-                if (model != null)
+                if ((s.transform.position - body.transform.position).sqrMagnitude <= 12250000.0f)
                 {
-                    trackedObject = model.gameObject;
+                    if (trackedObject == null)
+                    {
+                        trackedObject = s;
+                        bestAngle = angle;
+                    }
+                    else if (angle < bestAngle)
+                    {
+                        trackedObject = s;
+                        bestAngle = angle;
+                    }
                 }
-
-                return trackedObject;
             }
         }
-        return null;
+
+        if (Physics.Raycast(body.transform.position, body.transform.forward, out targets, 3500.0f) == true)
+        {
+            if ((targets.collider.tag == "Signature") || (targets.collider.tag == "SecondarySignature"))
+            { trackedObject = targets.transform.gameObject; }
+            else
+            { trackedObject = null; }
+        }
+
+        localSignature.tag = "Signature";
+
+        return trackedObject;
 	}
 }

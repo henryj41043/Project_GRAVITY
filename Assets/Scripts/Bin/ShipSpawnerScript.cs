@@ -11,7 +11,7 @@ public class ShipSpawnerScript : MonoBehaviour
     void Start()
     {
         shipCurCount = 0;
-        shipMaxCount = 5;
+        shipMaxCount = 20;
     }
 	
 	// Update is called once per frame
@@ -20,7 +20,7 @@ public class ShipSpawnerScript : MonoBehaviour
         if (shipCurCount < shipMaxCount)
         {
             shipCurCount = shipCurCount + 1;
-            Instantiate(Resources.Load("Enemy"), Random.rotation * Vector3.one * GravityWellData.gameWorldRadius, Random.rotation);
+            Instantiate(Resources.Load("Enemy"), Random.rotation * Vector3.one * WellDataScript.gameWorldRadius, Random.rotation);
         }
 	}
 }

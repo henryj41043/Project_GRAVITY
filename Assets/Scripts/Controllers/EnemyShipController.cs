@@ -5,11 +5,13 @@ class EnemyShipController : MonoBehaviour
 {
     // Script References
     ShipGraphics shipGraphics;
-    ShipPropulsionPhysics shipPropulsionPhysics;
+    ShipPhysicsScript shipPhysicsScript;
 
     // Component Variables
+    GameObject playerShip;
     GameObject enemyCam;
     Rigidbody body;
+    GameObject model;
     Collider capsuleCollider;
     Collider boxCollider;
     AudioSource lockSound;
@@ -19,6 +21,9 @@ class EnemyShipController : MonoBehaviour
     //float mouseThreshold;
     //float buttonSensitivity;
     //float buttonThreshold;
+
+    GameObject[] signatures;
+    GameObject target;
 
     float horTranslation;
     float verTranslation;
@@ -36,11 +41,13 @@ class EnemyShipController : MonoBehaviour
 
         // Script References
         shipGraphics = GetComponent<ShipGraphics>();
-        shipPropulsionPhysics = GetComponent<ShipPropulsionPhysics>();
+        shipPhysicsScript = GetComponent<ShipPhysicsScript>();
 
         // Component Variables
+        playerShip = GameObject.Find("Player");
         enemyCam = transform.Find("EnemyCamera").gameObject;
         body = GetComponent<Rigidbody>();
+        model = transform.Find("Model").gameObject;
         capsuleCollider = GetComponentInChildren<CapsuleCollider>();
         boxCollider = GetComponentInChildren<BoxCollider>();
         lockSound = GetComponent<AudioSource>();
@@ -50,6 +57,9 @@ class EnemyShipController : MonoBehaviour
         //mouseThreshold = 8.0f;
         //buttonSensitivity = 0.05f;
         //buttonThreshold = 0.05f;
+
+        signatures = null;
+        target = null;
 
         horTranslation = 0.0f;
         verTranslation = 1.0f;
@@ -72,30 +82,93 @@ class EnemyShipController : MonoBehaviour
         //if (verTranslation < 0.0f)
         //{ verTranslation = 0.0f; }
 
-        // Rotate Enemy Target Direction
-        Vector3 Fn = (GameObject.Find("Player").transform.position - body.transform.position).normalized * 100.0f;
-        if (GameObject.Find("Gravity Orb") != null)
+        if (target == null)
         {
-            Vector3 Fg = (GameObject.Find("Gravity Orb").transform.position - body.transform.position);
-            Fg = Fg.normalized * ((GravityWellData.gravityConstant * GravityWellData.gravityWellMass * (float)GravityWellData.gravityPolarity) / Mathf.Pow(Fg.magnitude, 2.0f));
+            model.tag = "Untagged";
 
-            enemyCam.transform.rotation = Quaternion.LookRotation(Fn - Fg);
+            GameObject[] signatures = GameObject.FindGameObjectsWithTag("Signature");
+            float bestAngle = -1.0f;
+
+            foreach (GameObject s in signatures)
+            {
+                float curAngle = Vector3.Angle(body.transform.forward.normalized, (s.transform.position - body.transform.position).normalized);
+
+                if (curAngle <= 60)
+                {
+                    if (target == null)
+                    {
+                        target = s;
+                        bestAngle = curAngle;
+                    }
+                    else if (curAngle < bestAngle)
+                    {
+                        target = s;
+                        bestAngle = curAngle;
+                    }
+                }
+            }
+
+            if (target == null)
+            {
+                signatures = GameObject.FindGameObjectsWithTag("SecondarySignature");
+                bestAngle = -1.0f;
+
+                foreach (GameObject s in signatures)
+                {
+                    float curAngle = Vector3.Angle(body.transform.forward.normalized, (s.transform.position - body.transform.position).normalized);
+
+                    if (curAngle <= 60)
+                    {
+                        if (target == null)
+                        {
+                            target = s;
+                            bestAngle = curAngle;
+                        }
+                        else if (curAngle < bestAngle)
+                        {
+                            target = s;
+                            bestAngle = curAngle;
+                        }
+                    }
+                }
+
+                if ((target == null) && (playerShip != null))
+                {
+                    target = playerShip;
+                }
+            }
+
+            model.tag = "Signature";
         }
-        else
-        {
-            enemyCam.transform.rotation = Quaternion.LookRotation(Fn);
-        }
+
+        // Rotate Enemy Target Direction
+        Vector3 Fn = (target.transform.position - body.transform.position).normalized * 100.0f;
+        //if (GameObject.Find("Gravity Orb") != null)
+        //{
+        //    Vector3 Fg = (GameObject.Find("Gravity Orb").transform.position - body.transform.position);
+        //    Fg = Fg.normalized * (2.0f * (GravityWellData.gravityConstant * GravityWellData.gravityWellMass * (float)GravityWellData.gravityPolarity) / Mathf.Pow(Fg.magnitude, 2.0f));
+        //
+        //    enemyCam.transform.rotation = Quaternion.LookRotation(Fn - Fg);
+        //}
+        //else
+        //{
+              enemyCam.transform.rotation = Quaternion.LookRotation(Fn);
+        //}
 
         // Rotate Body
         Quaternion bodyPreRot = body.transform.rotation;
-        Quaternion bodyRot = Quaternion.Lerp(body.transform.rotation, enemyCam.transform.rotation, 3.0f * Time.deltaTime);
+        float angle = Vector3.Angle(body.transform.forward.normalized, (enemyCam.transform.rotation * body.transform.forward).normalized);
+        Quaternion bodyRot = Quaternion.Lerp(body.transform.rotation, enemyCam.transform.rotation, Mathf.Clamp((360.0f / angle) * Time.deltaTime, 0.0f, 1.0f));
         body.transform.rotation = bodyRot;
+
+        if (Vector3.Angle(body.transform.forward.normalized, (target.transform.position - body.transform.position).normalized) > 60.0f)
+        { target = null; }
 
         // Draw Special FX
         shipGraphics.Draw(bodyPreRot, enemyCam.transform.rotation, verTranslation);
 
         // Track for Potential Targets
-        trackingResults = TargetLockScript.GetTargets(body);
+        trackingResults = TargetLockScript.GetTargets(body, model);
         if (trackingResults != null)
         {
             if (trackedObject == null)
@@ -122,6 +195,6 @@ class EnemyShipController : MonoBehaviour
     void FixedUpdate()
     {
         //Apply Physics
-        shipPropulsionPhysics.ApplyForces(horTranslation, verTranslation);
+        shipPhysicsScript.ApplyForces(horTranslation, verTranslation);
     }
 }

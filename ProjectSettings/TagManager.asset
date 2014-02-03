@@ -3,6 +3,9 @@
 --- !u!78 &1
 TagManager:
   tags:
+  - Signature
+  - SecondarySignature
+  - 
   - TargetableObject
   - 
   Builtin Layer 0: Default

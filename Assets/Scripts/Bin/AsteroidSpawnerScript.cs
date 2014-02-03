@@ -20,7 +20,7 @@ public class AsteroidSpawnerScript : MonoBehaviour
         if (asteroidCurCount < asteroidMaxCount)
         {
             asteroidCurCount = asteroidCurCount + 1;
-            Instantiate(Resources.Load("Asteroid"), Random.rotation * Vector3.one * GravityWellData.gameWorldRadius, Random.rotation);
+            Instantiate(Resources.Load("Asteroid"), Random.rotation * Vector3.one * WellDataScript.gameWorldRadius, Random.rotation);
         }
 	}
 }
