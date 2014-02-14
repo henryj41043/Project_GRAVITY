@@ -20,9 +20,9 @@ public class TargetLockScript : MonoBehaviour
             //Debug.DrawLine(body.transform.position, body.transform.position + body.transform.forward * 2000.0f, Color.red);
             angle = Vector3.Angle(body.transform.forward.normalized, (s.transform.position - body.transform.position).normalized);
 
-            if (angle < 1.0f)
+            if (angle < 1.5f)
             {
-                if ((s.transform.position - body.transform.position).sqrMagnitude <= 12250000.0f)
+                if ((s.transform.position - body.transform.position).sqrMagnitude <= 49000000.0f)
                 {
                     if (trackedObject == null)
                     {
@@ -38,7 +38,7 @@ public class TargetLockScript : MonoBehaviour
             }
         }
 
-        if (Physics.Raycast(body.transform.position, body.transform.forward, out targets, 3500.0f) == true)
+        if (Physics.Raycast(body.transform.position, body.transform.forward, out targets, 7000.0f) == true)
         {
             if ((targets.collider.tag == "Signature") || (targets.collider.tag == "SecondarySignature"))
             { trackedObject = targets.transform.gameObject; }

@@ -13,7 +13,8 @@ public class ShootingScript : MonoBehaviour {
         {
             BulletController script = projectile.GetComponent<BulletController>();
             script.trackedObject = trackedObject;
+            script.source = body.gameObject;
         }
-        projectile.rigidbody.velocity = (projectile.rigidbody.transform.forward * (1000.0f));
+        projectile.rigidbody.velocity = (projectile.rigidbody.transform.forward * (2000.0f));
 	}
 }

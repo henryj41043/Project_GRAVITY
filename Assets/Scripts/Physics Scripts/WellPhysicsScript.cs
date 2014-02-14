@@ -3,7 +3,7 @@ using System.Collections;
 
 [RequireComponent(typeof(Rigidbody))]
 [RequireComponent(typeof(ConstantForce))]
-public class GravityWellPhysics : MonoBehaviour
+public class WellPhysicsScript : MonoBehaviour
 {
     // Component Variables
     Rigidbody body;
@@ -11,6 +11,7 @@ public class GravityWellPhysics : MonoBehaviour
     // Gravity Well Object
     GameObject gravityWell;
     Vector3 gravityForce;
+    Vector3 distance;
 
 	// Use this for initialization
 	void Start ()
@@ -26,14 +27,43 @@ public class GravityWellPhysics : MonoBehaviour
     {
         if (gravityWell != null)
         {
-            gravityForce = (gravityWell.transform.position - body.transform.position);
-            gravityForce = gravityForce.normalized * ((WellDataScript.gravityConstant * WellDataScript.gravityWellMass * (float)WellDataScript.gravityPolarity) / Mathf.Pow(gravityForce.magnitude, 2.0f));
-            if (gravityForce.magnitude > 100.0f)
+            distance = (gravityWell.transform.position - body.transform.position);
+            gravityForce = distance.normalized * ((WellDataScript.gravityConstant * WellDataScript.gravityWellMass * (float)WellDataScript.gravityPolarity) / Mathf.Pow(distance.magnitude, 2.0f));
+            if (distance.magnitude > WellDataScript.gameWorldRadius)
             {
-                body.constantForce.force = gravityForce;
+                if ((gameObject.name == "Player") || (gameObject.name == "Enemy(Clone)"))
+                {
+                    ParticleSystem[] systems = gameObject.GetComponentsInChildren<ParticleSystem>();
+                    foreach (ParticleSystem p in systems)
+                    { p.enableEmission = false; }
+                    body.transform.position = body.transform.position + (distance.normalized * 2 * WellDataScript.gameWorldRadius);
+                    body.velocity = body.velocity.normalized * 1000.0f;
+                    if (gameObject.name == "Player")
+                    {
+                        TwirlEffect twirlEffect = gameObject.GetComponentInChildren<TwirlEffect>();
+                        twirlEffect.angle = 350.0f;
+                    }
+                    //body.transform.rotation = Quaternion.LookRotation(gravityWell.transform.position - body.transform.position);
+                }
             }
             else
-            { body.constantForce.force = Vector3.zero; }
+            {
+                if ((gameObject.name == "Player") || (gameObject.name == "Enemy(Clone)"))
+                {
+                    ParticleSystem[] systems = gameObject.GetComponentsInChildren<ParticleSystem>();
+                    foreach (ParticleSystem p in systems)
+                    { p.enableEmission = true; }
+                }
+
+                if (gravityForce.magnitude > 100.0f)
+                {
+                    body.constantForce.force = gravityForce;
+                }
+                else
+                {
+                    body.constantForce.force = Vector3.zero;
+                }
+            }
         }
 	}
 }

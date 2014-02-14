@@ -1,0 +1,278 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!21 &2100000
+Material:
+  serializedVersion: 3
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_Name: electricity_Glow_mat
+  m_Shader: {fileID: 4800000, guid: dbe339d74ccda7b4384666f9e899845f, type: 3}
+  m_ShaderKeywords: []
+  m_CustomRenderQueue: -1
+  m_SavedProperties:
+    serializedVersion: 2
+    m_TexEnvs:
+      data:
+        first:
+          name: _MainTex
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+      data:
+        first:
+          name: _BumpMap
+        second:
+          m_Texture: {fileID: 0}
+          m_Scale: {x: 1, y: 1}
+          m_Offset: {x: 0, y: 0}
+    m_Floats:
+      data:
+        first:
+          name: _ElectricityWidth
+        second: 6
+      data:
+        first:
+          name: _ElectricityBrightness
+        second: .178571433
+      data:
+        first:
+          name: _StepMotionRate_A
+        second: 1.10000002
+      data:
+        first:
+          name: _StepMotionRate_B
+        second: 2
+      data:
+        first:
+          name: _StepMagnitude
+        second: 8.94999981
+      data:
+        first:
+          name: _MotionRate_D1
+        second: 3
+      data:
+        first:
+          name: _Num_Ripples_D1
+        second: 200
+      data:
+        first:
+          name: _VertiOffsetScale_D
+        second: 0
+      data:
+        first:
+          name: _MotionRate_A1
+        second: .0209999997
+      data:
+        first:
+          name: _Num_Ripples_A1
+        second: .200000003
+      data:
+        first:
+          name: _VertiOffsetScale_A
+        second: 1
+      data:
+        first:
+          name: _MotionRate_B1
+        second: .209999993
+      data:
+        first:
+          name: _Num_Ripples_B1
+        second: 82
+      data:
+        first:
+          name: _VertiOffsetScale_B
+        second: 0
+      data:
+        first:
+          name: _MotionRate_C1
+        second: -.100000001
+      data:
+        first:
+          name: _Num_Ripples_C1
+        second: 25
+      data:
+        first:
+          name: _VertiOffsetScale_C
+        second: 0
+      data:
+        first:
+          name: _TimeOffset_A
+        second: 2
+      data:
+        first:
+          name: _MotionRate_A2
+        second: .0299999993
+      data:
+        first:
+          name: _Num_Ripples_A2
+        second: 7
+      data:
+        first:
+          name: _VertFracTime_Range_B
+        second: .600000024
+      data:
+        first:
+          name: _VertFracTime_Range_A
+        second: 2
+      data:
+        first:
+          name: _VertFracTime_B
+        second: 1.10000002
+      data:
+        first:
+          name: _VertFracTime_A
+        second: 2
+      data:
+        first:
+          name: _MotionRate_B2
+        second: .25
+      data:
+        first:
+          name: _Num_Ripples_B2
+        second: 79
+      data:
+        first:
+          name: _MotionRate_D2
+        second: 2.70000005
+      data:
+        first:
+          name: _MotionRate_C2
+        second: -.200000003
+      data:
+        first:
+          name: _Num_Ripples_C2
+        second: 23
+      data:
+        first:
+          name: _VertFracScale_C
+        second: 0
+      data:
+        first:
+          name: _FadeEndsTile
+        second: 3.13000011
+      data:
+        first:
+          name: _FadeEndsOffset
+        second: 0
+      data:
+        first:
+          name: _MotionRate_A
+        second: .589693129
+      data:
+        first:
+          name: _Num_Ripples_A
+        second: -5.68980169
+      data:
+        first:
+          name: _VertOffsetScale_A
+        second: 4.1509428
+      data:
+        first:
+          name: _MotionRate_B
+        second: 3.77358508
+      data:
+        first:
+          name: _Num_Ripples_B
+        second: 16.5587177
+      data:
+        first:
+          name: _VertOffsetScale_B
+        second: .377358496
+      data:
+        first:
+          name: _MotionRate_C
+        second: 3.91439033
+      data:
+        first:
+          name: _Num_Ripples_C
+        second: 6.58969259
+      data:
+        first:
+          name: _VertOffsetScale_C
+        second: .75471741
+      data:
+        first:
+          name: _NumberOffRipples
+        second: .5
+      data:
+        first:
+          name: _VertOffsetScale
+        second: 2.305125
+      data:
+        first:
+          name: _MotionRate
+        second: .0522387922
+      data:
+        first:
+          name: _NumberOfRipples
+        second: 72.8176575
+      data:
+        first:
+          name: _MotionRate2
+        second: .5
+      data:
+        first:
+          name: _NumberOfRipples2
+        second: 60.8773613
+      data:
+        first:
+          name: _StepMotionRate
+        second: 1.09701526
+      data:
+        first:
+          name: _Fresnel_A
+        second: .970149159
+      data:
+        first:
+          name: _Fresnel_B
+        second: .9701491
+      data:
+        first:
+          name: _FracTime_B
+        second: 2
+      data:
+        first:
+          name: _FracTime_A
+        second: 1.10000002
+      data:
+        first:
+          name: _FracTime_Range_B
+        second: 1
+      data:
+        first:
+          name: _FracTime_Range_A
+        second: 3
+      data:
+        first:
+          name: _UVDistortionRipple_Freq
+        second: 900
+      data:
+        first:
+          name: _UVDistortionRipple_Motion
+        second: 300
+      data:
+        first:
+          name: _UVDistortion_Scale
+        second: .100000001
+      data:
+        first:
+          name: _VertFadeEndsTile
+        second: 3.13000011
+      data:
+        first:
+          name: _VertFadeEndsOffset
+        second: 0
+    m_Colors:
+      data:
+        first:
+          name: _Color
+        second: {r: .589479685, g: 0, b: .992156863, a: 1}
+      data:
+        first:
+          name: _Pixel_Color0
+        second: {r: .432835817, g: .45266673, b: 1, a: 1}
+--- !u!1002 &2100001
+EditorExtensionImpl:
+  serializedVersion: 6

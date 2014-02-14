@@ -7,6 +7,7 @@ public class BulletController : MonoBehaviour {
     // Component Variables
     Rigidbody body;
 
+    public GameObject source;
     public GameObject trackedObject;
 
     // Use this for initialization
@@ -16,8 +17,8 @@ public class BulletController : MonoBehaviour {
 
         if (trackedObject != null)
         {
-            //body.transform.rotation = Quaternion.LookRotation(trackedObject.transform.position - body.transform.position);
-            //body.velocity = body.velocity.magnitude * body.transform.forward;
+            body.transform.rotation = Quaternion.LookRotation(trackedObject.transform.position - body.transform.position);
+            body.velocity = body.velocity.magnitude * body.transform.forward;
         }
     }
 	
@@ -28,7 +29,7 @@ public class BulletController : MonoBehaviour {
         {
             Quaternion rotation = Quaternion.LookRotation(trackedObject.transform.position - body.transform.position);
             float angle = Vector3.Angle(body.transform.forward.normalized, (trackedObject.transform.position - body.transform.position).normalized);
-            body.transform.rotation = Quaternion.Lerp(body.transform.rotation, rotation, (30.0f / angle) * Time.deltaTime);
+            body.transform.rotation = Quaternion.Lerp(body.transform.rotation, rotation, (20.0f / angle) * Time.deltaTime);
             body.velocity = body.velocity.magnitude * body.transform.forward;
         }
 	}
@@ -39,14 +40,30 @@ public class BulletController : MonoBehaviour {
         script.hits = script.hits + 1;
         if ((col.gameObject.name == "Asteroid(Clone)"))
         {
-            Destroy(col.gameObject);
-            AsteroidSpawnerScript.asteroidCurCount = AsteroidSpawnerScript.asteroidCurCount - 1;
-            GameObject explosion = Instantiate(Resources.Load("Explosion"), transform.position, Quaternion.identity) as GameObject;
+            Instantiate(Resources.Load("Explosion"), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
-        else if ((col.gameObject.name == "Enemy") || (col.gameObject.name == "Enemy(Clone)") || (col.gameObject.name == "Player"))
+        else if ((col.gameObject.name == "Enemy") || (col.gameObject.name == "Enemy(Clone)"))
         {
-            GameObject explosion = Instantiate(Resources.Load("Explosion"), transform.position, Quaternion.identity) as GameObject;
+            EnemyShipController enemyScript = col.gameObject.GetComponent<EnemyShipController>();
+            if (enemyScript.health <= 1)
+            {
+                Destroy(col.gameObject);
+                Instantiate(Resources.Load("Ship Explosion"), transform.position, Quaternion.identity);
+                ShipSpawnerScript.shipCurCount = ShipSpawnerScript.shipCurCount - 1;
+                CrystalController crystalScript = ((GameObject)Instantiate(Resources.Load("Crystal"), transform.position, Quaternion.identity)).GetComponent<CrystalController>();
+                crystalScript.trackedObject = source;
+            }
+            else
+            {
+                enemyScript.health = enemyScript.health - 1;
+                Instantiate(Resources.Load("Explosion"), transform.position, Quaternion.identity);
+            }
+            Destroy(gameObject);
+        }
+        else if (col.gameObject.name == "Player")
+        {
+            Instantiate(Resources.Load("Explosion"), transform.position, Quaternion.identity);
             Destroy(gameObject);
         }
         else

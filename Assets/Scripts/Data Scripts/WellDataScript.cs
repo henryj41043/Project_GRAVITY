@@ -18,7 +18,7 @@ public class WellDataScript : MonoBehaviour
     void Start()
     {
         // Spheres of Influence
-        gameWorldRadius = 2750;
+        gameWorldRadius = 5000.0f;
         sentryRadius = 0.0f;
         ionRadius = 0.0f;
 

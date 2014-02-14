@@ -34,6 +34,8 @@ class EnemyShipController : MonoBehaviour
     GameObject trackingResults;
     GameObject trackedObject;
 
+    public int health;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -68,6 +70,8 @@ class EnemyShipController : MonoBehaviour
         trackingResults = null;
         shootWaitTime = 0.0f;
         targetTime = 0.0f;
+
+        health = 10;
 	}
 	
 	// Update is called once per frame
@@ -110,29 +114,11 @@ class EnemyShipController : MonoBehaviour
 
             if (target == null)
             {
-                signatures = GameObject.FindGameObjectsWithTag("SecondarySignature");
-                bestAngle = -1.0f;
-
-                foreach (GameObject s in signatures)
+                if (signatures.Length > 0)
                 {
-                    float curAngle = Vector3.Angle(body.transform.forward.normalized, (s.transform.position - body.transform.position).normalized);
-
-                    if (curAngle <= 60)
-                    {
-                        if (target == null)
-                        {
-                            target = s;
-                            bestAngle = curAngle;
-                        }
-                        else if (curAngle < bestAngle)
-                        {
-                            target = s;
-                            bestAngle = curAngle;
-                        }
-                    }
+                    target = signatures[Random.Range(0, signatures.Length)];
                 }
-
-                if ((target == null) && (playerShip != null))
+                else
                 {
                     target = playerShip;
                 }

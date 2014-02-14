@@ -6,6 +6,6 @@ public class BulletCleaner : MonoBehaviour {
 	// Update is called once per frame
 	void Update ()
     {
-        Destroy(gameObject, 3.0f);
+        Destroy(gameObject, 2.0f);
 	}
 }

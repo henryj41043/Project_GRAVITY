@@ -6,6 +6,7 @@ class ThirdPersonController : MonoBehaviour
     // Script References
     ShipGraphics shipGraphics;
     ShipPhysicsScript shipPhysicsScript;
+    TwirlEffect twirlEffect;
 
     // Component Variables
     Camera cam;
@@ -31,6 +32,7 @@ class ThirdPersonController : MonoBehaviour
     float shootWaitTime;
     float targetTime;
     public int hits;
+    public int crystals;
 
     GameObject trackingResults;
     GameObject trackedObject;
@@ -41,6 +43,7 @@ class ThirdPersonController : MonoBehaviour
         // Script References
         shipGraphics = GetComponent<ShipGraphics>();
         shipPhysicsScript = GetComponent<ShipPhysicsScript>();
+        twirlEffect = GetComponentInChildren<TwirlEffect>();
 
         // Component Variables
         cam = GetComponentInChildren<Camera>();
@@ -67,11 +70,17 @@ class ThirdPersonController : MonoBehaviour
         shootWaitTime = 0.0f;
         targetTime = 0.0f;
         hits = 0;
+        crystals = 0;
 	}
 	
 	// Update is called once per frame
 	void Update ()
     {
+        if (twirlEffect.angle < 0.0f)
+        { twirlEffect.angle = 0.0f; }
+        else if (twirlEffect.angle > 0.0f)
+        { twirlEffect.angle = twirlEffect.angle - (400.0f * Time.deltaTime); }
+
         Screen.lockCursor = true;
 
         // Get Input
@@ -131,14 +140,14 @@ class ThirdPersonController : MonoBehaviour
 
     void OnGUI()
     {
-        GUI.Label(new Rect(0, 0, Screen.width, Screen.height), "Project: GRAVITY\nWeb Build 5\n----------------------\nBullets Hit: " + hits);
+        GUI.Label(new Rect(0, 0, Screen.width, Screen.height), "Project: GRAVITY\nWeb Build 5\n----------------------\nBullets Hit: " + hits + "\nCrystals Collected: " + crystals);
         if (trackedObject != null)
         {
             GUIStyle centeredStyle = GUI.skin.GetStyle("Label");
             centeredStyle.normal.textColor = Color.red;
             centeredStyle.alignment = TextAnchor.UpperCenter;
             float angle = Vector3.Angle(body.transform.forward.normalized, (trackedObject.transform.position - body.transform.position).normalized);
-            GUI.Label(new Rect(0, Screen.height / 2, Screen.width, Screen.height),"-- TARGET LOCKED --\n" + angle + " DEG", centeredStyle);
+            GUI.Label(new Rect(0, Screen.height / 2, Screen.width, Screen.height),"-- TARGET LOCKED --", centeredStyle);
         }
     }
 
@@ -146,6 +155,6 @@ class ThirdPersonController : MonoBehaviour
     void FixedUpdate()
     {
         //Apply Physics
-        shipPhysicsScript.ApplyForces(horTranslation, verTranslation);
+        shipPhysicsScript.ApplyForces(horTranslation, Mathf.Max(0.5f, verTranslation));
     }
 }
